@@ -28,17 +28,8 @@ To be added...
 ## 1.4. Directory structure
 
 ```shell
-├───Docs
-├───Shopping                                        //classes and packages
-│   ├───bin                                         //the binary to deploy on the end-user environment
-│   │   └───Debug
-│   └───obj
-│       └───Debug                                   
-└───TestShopping                                    //test classes
-    ├───bin
-    │   └───Debug
-    └───obj
-        └───Debug
+├───docs
+└───src
 ```
 
 ## 1.5. Contact
