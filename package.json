@@ -4,14 +4,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun --hot src/index.ts",
-    "start": "NODE_ENV=production bun src/index.ts",
+    "dev": "bun --hot src/index.jsx",
+    "start": "NODE_ENV=production bun src/index.jsx",
     "build": "bun run build.ts"
   },
   "dependencies": {
     "bun-plugin-tailwind": "^0.1.2",
     "react": "^19",
     "react-dom": "^19",
+    "react-router-dom": "^7.13.1",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {

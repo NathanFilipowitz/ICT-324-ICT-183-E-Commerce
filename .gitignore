@@ -1,6 +1,9 @@
 # dependencies (bun install)
 node_modules
 
+bun.lock
+shop.sqlite
+
 # output
 out
 dist
