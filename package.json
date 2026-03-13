@@ -9,6 +9,7 @@
     "build": "bun run build.ts"
   },
   "dependencies": {
+    "@rsuite/icons": "^1.4.0",
     "bun-plugin-tailwind": "^0.1.2",
     "react": "^19",
     "react-dom": "^19",
