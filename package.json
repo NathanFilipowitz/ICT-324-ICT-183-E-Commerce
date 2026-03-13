@@ -13,6 +13,7 @@
     "react": "^19",
     "react-dom": "^19",
     "react-router-dom": "^7.13.1",
+    "rsuite": "^6.1.2",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
