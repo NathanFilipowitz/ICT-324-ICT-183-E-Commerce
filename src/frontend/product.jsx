@@ -17,7 +17,7 @@ import {
     HStack
 } from 'rsuite';
 import {FaPlus, FaMinus} from 'react-icons/fa';
-import {LoremIpsum} from 'react-lorem-ipsum';
+import {loremIpsum} from 'react-lorem-ipsum';
 import 'rsuite/dist/rsuite.min.css';
 
 export default function ProductPage() {
@@ -39,6 +39,7 @@ export default function ProductPage() {
     };
 
     useEffect(() => {
+        // Method to call async function in useEffect
         async function getProduct() {
             const result = await fetch(`/api/product/${id}`);
             const product = await result.json()
@@ -53,14 +54,14 @@ export default function ProductPage() {
             <Button
                 appearance='default'
                 onClick={() => navigate("/home")}
-                marginTop={50}
+                marginTop={20}
                 position={'absolute'}
                 top={10}
                 left={20}
             >
                 Back to catalog
             </Button>
-            <Container>
+            <Container style={{ padding: '20px 50px' }}>
                 <Header position={'top'}>
                     {/*<Navbar/>*/}
                 </Header>
@@ -81,9 +82,9 @@ export default function ProductPage() {
                                 <Heading marginBottom={1} level={3}>{product.price} CHF</Heading>
                                 <Text>Stock: {product.stock}</Text>
                                 <Text>
-                                    <LoremIpsum p={1}/>
+                                    {loremIpsum()}
                                 </Text>
-                                <InputGroup inside style={{width: 100}}>
+                                <InputGroup inside style={{width: '100px'}}>
                                     <InputGroup.Button onClick={handleMinus} appearance="default">
                                         <FaMinus size={10}/>
                                     </InputGroup.Button>
