@@ -2,7 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Container, Header, Content, Footer, Nav, Navbar, Card, Button, TagGroup, Tag, Text } from "rsuite";
 import AddOutlineIcon from "@rsuite/icons/AddOutline";
+import { ProductController } from "../controllers/shop.controller.js";
+import {AppNavbar} from "../frontend/components/navbar.jsx"
 import 'rsuite/dist/rsuite.min.css';
+
+const products = ProductController.getAll();
 
 function ProductCard({ product, onAddToCart }) {
     const inStock = product.stock > 0;
@@ -42,16 +46,15 @@ function ProductCard({ product, onAddToCart }) {
 }
 
 export default function HomePage() {
-    const navigate = useNavigate();
-    const [products, setProducts] = useState([]);
+    // const [products, setProducts] = useState([]);
 
-    useEffect(() => {
-        setProducts([
-            { id: 1, name: "Wireless Mouse", price: 29.99, stock: 10 },
-            { id: 2, name: "Mechanical Keyboard", price: 89.99, stock: 5 },
-            { id: 3, name: "Gaming Monitor", price: 199.99, stock: 0 },
-        ]);
-    }, []);
+    // useEffect(() => {
+    //     setProducts([
+    //         { id: 1, name: "Wireless Mouse", price: 29.99, stock: 10 },
+    //         { id: 2, name: "Mechanical Keyboard", price: 89.99, stock: 5 },
+    //         { id: 3, name: "Gaming Monitor", price: 199.99, stock: 0 },
+    //     ]);
+    // }, []);
 
     const handleAddToCart = (product) => {
         console.log(`Controller: Adding product ${product.id} to cart`);
@@ -65,15 +68,7 @@ export default function HomePage() {
                 <p>The most secured and well handled E-commerce website.</p>
             </header>
 
-            <Navbar>
-                <Navbar.Brand>SecureShop</Navbar.Brand>
-                <Nav>
-                    <Nav.Item onClick={() => navigate("/product")}>All Products</Nav.Item>
-                    <Nav.Item onClick={() => navigate("/login")}>Login</Nav.Item>
-                </Nav>
-            </Navbar>
-
-            
+            <AppNavbar></AppNavbar>            
 
             <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
                 {products.map((product) => (
