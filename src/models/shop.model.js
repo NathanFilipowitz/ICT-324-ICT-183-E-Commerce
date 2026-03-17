@@ -1,7 +1,4 @@
-// import { sql } from "bun";
-import { Database } from "bun:sqlite"
-
-export const db = new Database("shop.sqlite");
+import {db} from '../models/db.ts'
 
 
 export const CatalogModel = {
