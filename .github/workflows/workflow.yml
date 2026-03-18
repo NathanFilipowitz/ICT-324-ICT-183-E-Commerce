@@ -17,6 +17,10 @@ jobs:
                     fetch-depth: 0
             -   name: Super-Linter
                 uses: super-linter/super-linter@v8.5.0
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    # Scan only changed files
+                    VALIDATE_ALL_CODEBASE: false
     bun:
         name: bun-job
         runs-on: ubuntu-latest
