@@ -9,16 +9,18 @@ export function setupDatabase() {
     db.run(`
       CREATE TABLE IF NOT EXISTS clients (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        username TEXT NOT NULL UNIQUE,
-        password TEXT NOT NULL
+        name VARCHAR(45) NOT NULL,
+        username VARCHAR(45) NOT NULL UNIQUE,
+        password VARCHAR(45) NOT NULL,
+        cart INT NULL,
+        commands INT NULL
       )
     `);
 
     db.run(`
       CREATE TABLE IF NOT EXISTS products (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
+        name VARCHAR(45) NOT NULL,
         price REAL NOT NULL,
         stock INTEGER DEFAULT 0
       )
@@ -27,17 +29,20 @@ export function setupDatabase() {
     db.run(`
       CREATE TABLE IF NOT EXISTS commands (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        status TEXT NOT NULL,
-        address TEXT NOT NULL,
-        client_id INTEGER NOT NULL
+        status VARCHAR(45) NOT NULL,
+        address VARCHAR(45) NOT NULL,
+        clients_id INTEGER NOT NULL,
+        FOREIGN KEY (clients_id) REFERENCES clients(id)
       )
     `);
 
     db.run(`
-      CREATE TABLE IF NOT EXISTS order_items (
-        product_id INTEGER NOT NULL,
-        command_id INTEGER NOT NULL,
-        quantity INTEGER DEFAULT 1
+      CREATE TABLE IF NOT EXISTS products_has_commands (
+        products_id INTEGER NOT NULL,
+        commands_id INTEGER NOT NULL,
+        PRIMARY KEY (products_id, commands_id),
+        FOREIGN KEY (products_id) REFERENCES products(id),
+        FOREIGN KEY (commands_id) REFERENCES commands(id)
       )
     `);
   })();
@@ -85,7 +90,7 @@ export function createOrder(clientId: any, address: string, productIds: number[]
   const orderId = result.id;
 
   for (const pId of productIds) {
-    db.run(`INSERT INTO order_items (command_id, product_id) VALUES (${orderId}, ${pId})`);
+    db.run(`INSERT INTO products_has_commands (command_id, product_id) VALUES (${orderId}, ${pId})`);
   }
   
   return orderId;
