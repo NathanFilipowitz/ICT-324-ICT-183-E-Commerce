@@ -1,7 +1,7 @@
-FROM node:22-alpine
+FROM oven/bun:alpine
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
+COPY package*.json bun.lockb ./
+RUN bun install
 COPY . .
 EXPOSE 3000
 CMD ["bun", "run", "dev"]
