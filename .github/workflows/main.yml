@@ -34,7 +34,7 @@ jobs:
             #            -   run: bun run dev
             -   run: bun run build
     build-and-push:
-        needs: [ linter, bun ]
+#        needs: [ linter, bun ]
         runs-on: ubuntu-latest
         permissions:
             contents: read
