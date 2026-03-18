@@ -5,22 +5,14 @@
  * Purpose: Controller for the shop
  */
 
-// import * as model from "../models/db.ts";
+import ProductModel from "../models/shop.model.js"
 
-const model = {
-  getAllProducts: () => {
-    return 0;
+export const ProductController = {
+  getAllProducts: async () => {
+    const products = await ProductModel.getAllProducts();
+    if (!products) throw new Error("Products not found");
+    return products;
   },
-  getProductById: (id) => {
-    return id;
-  },
-  deleteProduct: (id) => {
-    return id;
-  }
-}
-
-const ProductController = {
-  getAll: () => model.getAllProducts(),
 
   getById: (id) => {
     const product = model.getProductById(id);
