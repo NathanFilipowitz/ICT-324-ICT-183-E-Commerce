@@ -20,5 +20,7 @@ export const ProductController = {
     return product;
   },
 
-  remove: (id) => model.deleteProduct(id)
+  remove: async (id) => {
+    return await ProductModel.deleteProduct(id);
+  }
 };
