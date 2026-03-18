@@ -18,6 +18,7 @@ import {
 } from 'rsuite';
 import {FaPlus, FaMinus} from 'react-icons/fa';
 import {loremIpsum} from 'react-lorem-ipsum';
+import {AppNavbar} from "@/frontend/components/Navbar.jsx";
 import 'rsuite/dist/rsuite.min.css';
 
 export default function ProductPage() {
@@ -34,6 +35,7 @@ export default function ProductPage() {
     const handleMinus = () => {
         setValue(parseInt(value, 10) - 1);
     };
+    
     const handlePlus = () => {
         setValue(parseInt(value, 10) + 1);
     };
@@ -63,7 +65,7 @@ export default function ProductPage() {
             </Button>
             <Container style={{ padding: '20px 50px' }}>
                 <Header position={'top'}>
-                    {/*<Navbar/>*/}
+                    <AppNavbar/>
                 </Header>
                 <Grid fluid>
                     <Row gutter={[50, 10]}>
