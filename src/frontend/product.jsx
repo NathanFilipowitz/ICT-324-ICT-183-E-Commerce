@@ -40,6 +40,10 @@ export default function ProductPage() {
         setValue(parseInt(value, 10) + 1);
     };
 
+    const workflowTest = () => {
+        console.log("Testing workflow");
+    }
+
     useEffect(() => {
         // Method to call async function in useEffect
         async function getProduct() {
