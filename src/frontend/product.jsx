@@ -18,7 +18,7 @@ import {
 } from 'rsuite';
 import {FaPlus, FaMinus} from 'react-icons/fa';
 import {loremIpsum} from 'react-lorem-ipsum';
-import {AppNavbar} from "@/frontend/components/Navbar.jsx";
+import {AppNavbar} from "./components/navbar.jsx";
 import 'rsuite/dist/rsuite.min.css';
 
 export default function ProductPage() {
