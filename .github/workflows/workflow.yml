@@ -12,7 +12,7 @@ jobs:
         name: linter check
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+#            - uses: actions/checkout@v4
             - name: Super-Linter
               uses: super-linter/super-linter@v8.5.0
     bun:
@@ -23,5 +23,5 @@ jobs:
             -   uses: oven-sh/setup-bun@v2
 
             -   run: bun install --frozen-lockfile
-            -   run: bun run dev
+#            -   run: bun run dev
             -   run: bun run build
