@@ -5,7 +5,7 @@ export const CatalogModel = {
 
 }
 
-export const ProductModel = {
+const ProductModel = {
     getAllProducts: async () => {
         try {
             return db.query("SELECT * FROM products").all();
@@ -21,3 +21,5 @@ export const ProductModel = {
         }
     }
 }
+
+export default ProductModel
