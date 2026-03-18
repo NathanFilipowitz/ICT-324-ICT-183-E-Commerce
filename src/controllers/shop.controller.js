@@ -14,8 +14,8 @@ export const ProductController = {
     return products;
   },
 
-  getById: (id) => {
-    const product = model.getProductById(id);
+  getProductById: async (id) => {
+    const product = await ProductModel.getProductById(id);
     if (!product) throw new Error("Product not found");
     return product;
   },
