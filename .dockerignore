@@ -1,0 +1,34 @@
+# Dépendances - À IGNORER ABSOLUMENT
+node_modules
+npm-debug.log
+package-lock.json  # Optionnel: si vous préférez que npm install la regénère
+.env
+.env.*
+
+# IDE et éditeurs
+.vscode
+.idea
+
+# Git et versioning
+.git
+.gitignore
+.gitattributes
+.github  # IMPORTANT: ignore tout le dossier .github
+
+# Logs et bases de données
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Fichiers temporaires
+tmp
+temp
+*.tmp
+*.temp
+
+# Documentation (inutile dans l'image finale)
+README.md
+CHANGELOG.md
+LICENSE
+docs/
