@@ -1,0 +1,27 @@
+name: bun CI and linter
+on:
+    push:
+        branches: [main]
+        paths: ['**.js', '**.jsx', '**.ts']
+    pull_request:
+        branches: [main]
+        paths: ['**.js', '**.jsx', '**.ts']
+
+jobs:
+    linter:
+        name: linter check
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Super-Linter
+              uses: super-linter/super-linter@v8.5.0
+    bun:
+        name: bun-job
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v4
+            -   uses: oven-sh/setup-bun@v2
+
+            -   run: bun install --frozen-lockfile
+            -   run: bun run dev
+            -   run: bun run build
