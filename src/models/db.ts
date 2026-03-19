@@ -104,3 +104,18 @@ export function createOrder(clientId: any, address: string, productIds: number[]
   
   return orderId;
 }
+
+// --- CART FUNCTIONS ---
+
+export function getCartByClientId(clientId: number) {
+  return db.query(`SELECT p.*, c.quantity FROM products p JOIN cart_items c ON p.id = c.products_id WHERE c.clients_id = ${clientId}`).all();
+}
+
+export function addToCart(clientId: number, productId: number) {
+  return db.run(`
+    INSERT INTO cart_items (clients_id, products_id, quantity) 
+    VALUES (${clientId}, ${productId}, 1)
+    ON CONFLICT(clients_id, products_id) DO UPDATE SET quantity = quantity + 1 
+  `);
+  // AI HELP: generate an SQL way to add to cart, updating quantity instead of duplicating the row
+}
