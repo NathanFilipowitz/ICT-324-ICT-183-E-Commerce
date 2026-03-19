@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useSearchParams} from "react-router-dom";
-import { Container, Header, Content, Footer, Nav, Navbar, Card, Button, TagGroup, Tag, Text } from "rsuite";
+import { Card, Button, TagGroup, Tag, Text } from "rsuite";
 import AddOutlineIcon from "@rsuite/icons/AddOutline";
 import {AppNavbar} from "../frontend/components/navbar.jsx"
 import 'rsuite/dist/rsuite.min.css';
