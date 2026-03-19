@@ -11,9 +11,7 @@ export function setupDatabase() {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name VARCHAR(45) NOT NULL,
         username VARCHAR(45) NOT NULL UNIQUE,
-        password VARCHAR(45) NOT NULL,
-        cart INT NULL,
-        commands INT NULL
+        password VARCHAR(45) NOT NULL
       )
     `);
 
@@ -43,6 +41,17 @@ export function setupDatabase() {
         PRIMARY KEY (products_id, commands_id),
         FOREIGN KEY (products_id) REFERENCES products(id),
         FOREIGN KEY (commands_id) REFERENCES commands(id)
+      )
+    `);
+
+    db.run(`
+      CREATE TABLE IF NOT EXISTS cart_items (
+        clients_id INTEGER NOT NULL,
+        products_id INTEGER NOT NULL,
+        quantity INTEGER DEFAULT 1,
+        PRIMARY KEY (clients_id, products_id),
+        FOREIGN KEY (clients_id) REFERENCES clients(id),
+        FOREIGN KEY (products_id) REFERENCES products(id)
       )
     `);
   })();
