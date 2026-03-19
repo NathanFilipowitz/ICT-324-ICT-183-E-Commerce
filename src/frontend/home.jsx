@@ -43,11 +43,9 @@ function ProductCard({ product, onAddToCart }) {
 }
 
 export default function HomePage() {
+    const navigate = useNavigate();
     const [products, setProducts] = useState([]);
-    const [searchParams] = useSearchParams();
-    // const [product, setProduct] = useState([]);
-    // const [value, setValue] = useState(0);
-    // const id = searchParams.get('id');
+    // const [searchParams] = useSearchParams();
 
     useEffect(() => {
         async function getAllProducts() {
@@ -62,9 +60,32 @@ export default function HomePage() {
         getAllProducts();
     }, []); // Empty dependency since we want the whole catalog once
 
-    const handleAddToCart = (product) => {
-        console.log(`Controller: Adding product ${product.id} to cart`);
-        alert(`Added ${product.name} to cart!`);
+    const handleAddToCart = async (product) => {
+        // Check if user is logged in (not secured because user can modify this data himself easily !)
+        const storedUser = localStorage.getItem("userId");
+
+        if (!storedUser) {
+            // Redirect to login if no user found
+            alert("Please login to add items to your cart!");
+            navigate("/login");
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/cart/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    clientId: parseInt(storedUser), 
+                    productId: product.id 
+                })
+            });
+
+            if (!response.ok) throw new Error("Failed to add to cart");
+            alert(`Added ${product.name} to your cart!`);
+        } catch (error) {
+            console.error("Cart Error:", error);
+        }
     };
 
     return (
