@@ -93,13 +93,13 @@ export function getClientByUsername(username: string) {
 
 export function createOrder(clientId: any, address: string, productIds: number[]) {
   const result: any = db.query(
-    `INSERT INTO commands (status, address, client_id) VALUES ('pending', '${address}', ${clientId}) RETURNING id`
+    `INSERT INTO commands (status, address, clients_id) VALUES ('pending', '${address}', ${clientId}) RETURNING id`
   ).get();
   
   const orderId = result.id;
 
   for (const pId of productIds) {
-    db.run(`INSERT INTO products_has_commands (command_id, product_id) VALUES (${orderId}, ${pId})`);
+    db.run(`INSERT INTO products_has_commands (commands_id, products_id) VALUES (${orderId}, ${pId})`);
   }
   
   return orderId;
