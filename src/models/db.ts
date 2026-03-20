@@ -9,16 +9,16 @@ export function setupDatabase() {
     db.run(`
       CREATE TABLE IF NOT EXISTS clients (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        username TEXT NOT NULL UNIQUE,
-        password TEXT NOT NULL
+        name VARCHAR(45) NOT NULL,
+        username VARCHAR(45) NOT NULL UNIQUE,
+        password VARCHAR(45) NOT NULL
       )
     `);
 
     db.run(`
       CREATE TABLE IF NOT EXISTS products (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
+        name VARCHAR(45) NOT NULL,
         price REAL NOT NULL,
         stock INTEGER DEFAULT 0
       )
@@ -27,17 +27,31 @@ export function setupDatabase() {
     db.run(`
       CREATE TABLE IF NOT EXISTS commands (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        status TEXT NOT NULL,
-        address TEXT NOT NULL,
-        client_id INTEGER NOT NULL
+        status VARCHAR(45) NOT NULL,
+        address VARCHAR(45) NOT NULL,
+        clients_id INTEGER NOT NULL,
+        FOREIGN KEY (clients_id) REFERENCES clients(id)
       )
     `);
 
     db.run(`
-      CREATE TABLE IF NOT EXISTS order_items (
-        product_id INTEGER NOT NULL,
-        command_id INTEGER NOT NULL,
-        quantity INTEGER DEFAULT 1
+      CREATE TABLE IF NOT EXISTS products_has_commands (
+        products_id INTEGER NOT NULL,
+        commands_id INTEGER NOT NULL,
+        PRIMARY KEY (products_id, commands_id),
+        FOREIGN KEY (products_id) REFERENCES products(id),
+        FOREIGN KEY (commands_id) REFERENCES commands(id)
+      )
+    `);
+
+    db.run(`
+      CREATE TABLE IF NOT EXISTS cart_items (
+        clients_id INTEGER NOT NULL,
+        products_id INTEGER NOT NULL,
+        quantity INTEGER DEFAULT 1,
+        PRIMARY KEY (clients_id, products_id),
+        FOREIGN KEY (clients_id) REFERENCES clients(id),
+        FOREIGN KEY (products_id) REFERENCES products(id)
       )
     `);
   })();
@@ -79,14 +93,29 @@ export function getClientByUsername(username: string) {
 
 export function createOrder(clientId: any, address: string, productIds: number[]) {
   const result: any = db.query(
-    `INSERT INTO commands (status, address, client_id) VALUES ('pending', '${address}', ${clientId}) RETURNING id`
+    `INSERT INTO commands (status, address, clients_id) VALUES ('pending', '${address}', ${clientId}) RETURNING id`
   ).get();
   
   const orderId = result.id;
 
   for (const pId of productIds) {
-    db.run(`INSERT INTO order_items (command_id, product_id) VALUES (${orderId}, ${pId})`);
+    db.run(`INSERT INTO products_has_commands (commands_id, products_id) VALUES (${orderId}, ${pId})`);
   }
   
   return orderId;
+}
+
+// --- CART FUNCTIONS ---
+
+export function getCartByClientId(clientId: number) {
+  return db.query(`SELECT p.*, c.quantity FROM products p JOIN cart_items c ON p.id = c.products_id WHERE c.clients_id = ${clientId}`).all();
+}
+
+export function addToCart(clientId: number, productId: number) {
+  return db.run(`
+    INSERT INTO cart_items (clients_id, products_id, quantity) 
+    VALUES (${clientId}, ${productId}, 1)
+    ON CONFLICT(clients_id, products_id) DO UPDATE SET quantity = quantity + 1 
+  `);
+  // AI HELP: generate an SQL way to add to cart, updating quantity instead of duplicating the row
 }
