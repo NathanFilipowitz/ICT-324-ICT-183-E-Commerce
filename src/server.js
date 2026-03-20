@@ -42,6 +42,15 @@ const server = serve({
                 return new Response("Database Error", {status: 500});
             }
         },
+        "/api/cart/:clientId": async (req) => {
+            const cart = await ProductController.getCart(req.params.clientId);
+            return Response.json(cart);
+        },
+        "/api/cart/add": async (req) => {
+            const { clientId, productId } = await req.json();
+            await ProductController.addToCart(clientId, productId);
+            return new Response("Added to cart", { status: 200 });
+        },
         "/*": index,
     },
     development: {
