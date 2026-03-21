@@ -3,6 +3,8 @@ name: Build and Push to GHCR
 on:
     push:
         branches: [ main ]
+        tags:
+            - 'v*'
         paths: [ '**.js', '**.jsx', '**.ts' ]
     pull_request:
         branches: [ main ]
