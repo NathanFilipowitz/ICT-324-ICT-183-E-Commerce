@@ -2,7 +2,7 @@ name: Build and Push to GHCR
 
 on:
     push:
-        branches: [ main, feature/workflows ]
+        branches: [ main ]
         tags:
             - 'v*'
         paths: [ '**.js', '**.jsx', '**.ts' ]
