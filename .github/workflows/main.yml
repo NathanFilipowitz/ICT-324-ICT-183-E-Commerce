@@ -11,6 +11,10 @@ on:
         paths: [ '**.js', '**.jsx', '**.ts' ]
     workflow_dispatch:
 
+env:
+    REGISTRY: ghcr.io
+    IMAGE_NAME: ${{ github.repository }}
+
 jobs:
     linter:
         name: linter check
