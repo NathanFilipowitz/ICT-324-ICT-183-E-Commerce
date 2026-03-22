@@ -24,3 +24,14 @@ export const ProductController = {
     return await ProductModel.deleteProduct(id);
   }
 };
+
+export const CartController = {
+  getCart: async (clientId) => {
+    cart = await ProductModel.getCartByClientId(clientId);
+    if (!cart) throw new Error("Cart not found");
+    return cart;
+  },
+  addToCart: async (clientId, productId) => {
+    return await ProductModel.addToCart(clientId, productId);
+  }
+}
