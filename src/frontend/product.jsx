@@ -25,21 +25,46 @@ export default function ProductPage() {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const [product, setProduct] = useState([]);
-    const [value, setValue] = useState(0);
+    const [quantity, setQuantity] = useState(0);
     const id = searchParams.get('id');
 
-    const handleAddCart = () => {
-        console.log("Pressed Cart Button");
-    }
+    const handleAddToCart = async (product) => {
+        // Check if user is logged in (not secured because user can modify this data himself easily !)
+        const storedUser = localStorage.getItem("userId");
+
+        // if (!storedUser) {
+        //     // Redirect to login if no user found
+        //     alert("Please login to add items to your cart!");
+        //     navigate("/login");
+        //     return;
+        // }
+
+        try {
+            const response = await fetch('/api/cart/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    // clientId: parseInt(storedUser),
+                    clientId: 1,            // For testing purposes
+                    productId: product.id,
+                    quantity: quantity
+                })
+            });
+
+            if (!response.ok) throw new Error("Failed to add to cart");
+            alert(`Added ${product.name} to your cart!`);
+        } catch (error) {
+            console.error("Cart Error:", error);
+        }
+    };
 
     const handleMinus = () => {
-        setValue(parseInt(value, 10) - 1);
+        setQuantity(parseInt(quantity, 10) - 1);
     };
     
     const handlePlus = () => {
-        setValue(parseInt(value, 10) + 1);
+        setQuantity(parseInt(quantity, 10) + 1);
     };
-
 
     useEffect(() => {
         // Method to call async function in useEffect
@@ -66,7 +91,9 @@ export default function ProductPage() {
             </Button>
             <Container style={{ padding: '20px 50px' }}>
                 <Header position={'top'}>
-                    <AppNavbar/>
+                    <AppNavbar
+                        clientId={1}        // For testing purpose
+                    />
                 </Header>
                 <Grid fluid>
                     <Row gutter={[50, 10]}>
@@ -91,14 +118,14 @@ export default function ProductPage() {
                                     <InputGroup.Button onClick={handleMinus} appearance="default">
                                         <FaMinus size={10}/>
                                     </InputGroup.Button>
-                                    <NumberInput value={value} onChange={setValue} controls={false}/>
+                                    <NumberInput value={quantity} onChange={setQuantity} controls={false}/>
                                     <InputGroup.Button onClick={handlePlus} appearance="default">
                                         <FaPlus size={10}/>
                                     </InputGroup.Button>
                                 </InputGroup>
                                 <Button
                                     appearance='default'
-                                    onClick={() => handleAddCart()}
+                                    onClick={() => handleAddToCart(product)}
                                 >
                                     Add to cart
                                 </Button>
