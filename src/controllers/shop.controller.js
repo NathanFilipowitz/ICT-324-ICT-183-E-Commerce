@@ -5,33 +5,39 @@
  * Purpose: Controller for the shop
  */
 
-import ProductModel from "../models/shop.model.js"
+import {ProductModel, CartModel, CatalogModel} from "../models/shop.model.js"
+
+export const CatalogController = {
+    addOrder: async (status, address, client_id) => {
+        return await CatalogModel.addOrder(status, address, client_id);
+    }
+}
 
 export const ProductController = {
-  getAllProducts: async () => {
-    const products = await ProductModel.getAllProducts();
-    if (!products) throw new Error("Products not found");
-    return products;
-  },
+    getAllProducts: async () => {
+        const products = await ProductModel.getAllProducts();
+        if (!products) throw new Error("Products not found");
+        return products;
+    },
 
-  getProductById: async (id) => {
-    const product = await ProductModel.getProductById(id);
-    if (!product) throw new Error("Product not found");
-    return product;
-  },
+    getProductById: async (id) => {
+        const product = await ProductModel.getProductById(id);
+        if (!product) throw new Error("Product not found");
+        return product;
+    },
 
-  remove: async (id) => {
-    return await ProductModel.deleteProduct(id);
-  }
+    remove: async (id) => {
+        return await ProductModel.deleteProduct(id);
+    }
 };
 
 export const CartController = {
-  getCart: async (clientId) => {
-    cart = await ProductModel.getCartByClientId(clientId);
-    if (!cart) throw new Error("Cart not found");
-    return cart;
-  },
-  addToCart: async (clientId, productId) => {
-    return await ProductModel.addToCart(clientId, productId);
-  }
+    getCart: async (clientId) => {
+        const cart = await CartModel.getCartByClientId(clientId);
+        if (!cart) throw new Error("Cart not found");
+        return cart;
+    },
+    addToCart: async (clientId, productId, quantity) => {
+        return await CartModel.addToCart(clientId, productId, quantity);
+    }
 }
