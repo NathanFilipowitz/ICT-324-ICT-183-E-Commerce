@@ -3,6 +3,7 @@ import "./index.css";
 import HomePage from './frontend/home'
 import LoginPage from './frontend/login'
 import ProductPage from './frontend/product'
+import CheckoutPage from './frontend/checkout'
 
 export function App() {
     return (
@@ -10,6 +11,7 @@ export function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/product" element={<ProductPage />} />
+            <Route path="/checkout/:id" element={<CheckoutPage />} />
             <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
     );
