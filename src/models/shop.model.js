@@ -2,12 +2,13 @@ import db from "../../shop.sqlite" with {type: "sqlite"};
 
 export const CatalogModel = {
     createOrder: async (status, address, client_id) => {
-        const result = db.query(`INSERT INTO commands (status, address, clients_id)
-                                 VALUES ($status, $address, $client_id) RETURNING id`).get({
-            $status: `'${status}'`,
-            $address: `'${address}'`,
-            $client_id: client_id
-        });
+        try {
+            const result = db.query(`INSERT INTO commands (status, address, clients_id)
+                                     VALUES ($status, $address, $client_id) RETURNING id`).get({
+                $status: status,
+                $address: address,
+                $client_id: client_id
+            });
 
         const orderId = result.id;
 
