@@ -53,7 +53,7 @@ const server = serve({
         },
         "/api/command/add": async (req) => {
             let { status, address, clientId } = await req.json();
-            await CatalogController.addOrder(status, address, clientId);
+            await CatalogController.createOrder(status, address, clientId);
             return new Response("Order made", { status: 200 });
         },
         "/*": index,
