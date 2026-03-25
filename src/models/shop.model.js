@@ -10,19 +10,25 @@ export const CatalogModel = {
                 $client_id: client_id
             });
 
-        const orderId = result.id;
+            const orderId = result.id;
 
-        let productIds = db.query("SELECT products_id FROM cart_items WHERE clients_id = $client_id").all({$client_id: client_id});
+            // add to 'products_has_commands' table
+            const productIds = db.query("SELECT products_id FROM cart_items WHERE clients_id = $client_id").all({$client_id: client_id});
+            productIds.map(p => {
+                db.query(`INSERT INTO products_has_commands (commands_id, products_id)
+                        VALUES ($orderId, $productsId)`).get({
+                    $orderId: orderId,
+                    $productsId: p.products_id
+                });
+            })
 
-        productIds.map(p => {
-            db.query(`INSERT INTO products_has_commands (commands_id, products_id)
-                    VALUES ($orderId, $productsId)`).get({
-                $orderId: orderId,
-                $productsId: p.products_id
-            });
-        })
+            // delete user cart
+            db.query("DELETE FROM cart_items WHERE clients_id = $client_id").all({$client_id: client_id});
 
-        return orderId;
+            return orderId;
+        } catch (err) {
+            throw err;
+        }
     }
 }
 
