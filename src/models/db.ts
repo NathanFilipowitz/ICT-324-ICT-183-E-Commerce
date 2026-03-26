@@ -40,6 +40,8 @@ export function setupDatabase() {
         quantity INTEGER DEFAULT 1
       )
     `);
+
+
   })();
 }
 
