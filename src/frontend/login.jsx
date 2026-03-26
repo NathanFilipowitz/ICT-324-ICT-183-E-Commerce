@@ -38,12 +38,13 @@ export default function LoginPage() {
 
             const data = await res.json();
 
-            if (!data.valide) {
-                setError("Utilisateur ou mot de passe invalide");
+            if (!data.user_id) {
+                alert("Utilisateur ou mot de passe invalide");
                 return;
             }
 
-            navigate(`/home/${formValue.name}`);
+            localStorage.setItem("user_id", data.user_id);
+            navigate(`/home`);
 
         } catch (err) {
             setError("Erreur serveur");

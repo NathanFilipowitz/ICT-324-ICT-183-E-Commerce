@@ -8,7 +8,8 @@
 import {serve} from "bun";
 import index from "./index.html";
 import {setupDatabase} from "./models/db.ts";
-import {CartController, CatalogController, ProductController, LoginController} from "@/controllers/shop.controller.js";
+import {CartController, CatalogController, ProductController} from "@/controllers/shop.controller.js";
+import {LoginController} from '@/controllers/login.controller.js'
 
 setupDatabase();
 
@@ -67,9 +68,6 @@ const server = serve({
                 products: products
             }, { status: 200 });
         },
-
-
-
         "/api/verifier-id": {
             POST: async (req) => {
                 try {
@@ -83,9 +81,9 @@ const server = serve({
                         );
                     }
 
-                    const valide = LoginController.checkUser(username, password);
+                    const id = LoginController.checkUser(username, password);
 
-                    return Response.json({ valide });
+                    return Response.json({ user_id: id });
 
                     if (!username) {
                         return new Response(
