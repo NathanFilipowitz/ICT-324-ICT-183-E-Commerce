@@ -10,6 +10,9 @@ import {ProductModel, CartModel, CatalogModel} from "../models/shop.model.js"
 export const CatalogController = {
     createOrder: async (status, address, client_id) => {
         return await CatalogModel.createOrder(status, address, client_id);
+    },
+    getOrder: async (client_id) => {
+        return await CatalogModel.getOrder(client_id);
     }
 }
 

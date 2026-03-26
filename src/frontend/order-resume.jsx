@@ -12,56 +12,35 @@ import {
 } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 
-export default function CheckoutPage() {
+export default function OrderResumePage() {
     const navigate = useNavigate();
-    const [cart, setCart] = useState([]);
+    const [order, setOrder] = useState([]);
     const {id} = useParams();
-
-    const handlePayment = async () => {
-        try {
-            const response = await fetch('/api/order/add', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    status: 'Processing',
-                    address: "Rue Cathédrale 24, 1000 Lausanne, Switzerland",
-                    clientId: id,
-                })
-            });
-
-            const order = await response.json()
-
-            if (!response.ok) throw new Error("Failed to create command");
-            alert(`Order is successful !`);
-            navigate(`/order/${order.order_id}`);
-        } catch (error) {
-            console.error("Order Error:", error);
-        }
-    }
 
     useEffect(() => {
         // Method to call async function in useEffect
-        async function getCart() {
-            const result = await fetch(`/api/cart/${id}`);
-            const product = await result.json()
-            setCart(product);
+        async function getOrder() {
+            const result = await fetch(`/api/order/${id}`);
+            const order = await result.json()
+            setOrder(order.products);
         }
 
-        getCart();
+        getOrder();
     }, [id])
 
     return (
         <Container>
             <Header>
                 <VStack alignItems={'center'} marginBottom={50}>
-                    <Heading marginBottom={10} level={1}>Confirm checkout</Heading>
+                    <Heading marginBottom={10} level={1}>Thank you for your order !</Heading>
+                    <Heading marginBottom={10} level={5}>Order n°{id}</Heading>
                     <Heading marginBottom={10} level={3}>Products</Heading>
                 </VStack>
             </Header>
             <Content>
                 <VStack alignItems={'center'}>
                     <List>
-                        {cart.map(product => (
+                        {order.map(product => (
                             <List.Item key={product.id}>
                                 <HStack spacing={15} alignItems="center">
                                     <Avatar src={product.avatar} alt={product.sender} circle/>
@@ -80,8 +59,8 @@ export default function CheckoutPage() {
                     </List>
                     <Button
                         appearance={'primary'}
-                        onClick={() => handlePayment()}
-                    >Pay</Button>
+                        onClick={() => navigate("/home")}
+                    >Home</Button>
                 </VStack>
             </Content>
         </Container>

@@ -56,6 +56,14 @@ const server = serve({
             await CatalogController.createOrder(status, address, clientId);
             return new Response("Order made", { status: 200 });
         },
+        "/api/order/:id": async (req) => {
+            const id = req.params.id;
+            const products = await CatalogController.getOrder(id);
+            return Response.json({
+                message: "Order retrieved",
+                products: products
+            }, { status: 200 });
+        },
         "/*": index,
     },
     development: {

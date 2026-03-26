@@ -29,6 +29,17 @@ export const CatalogModel = {
         } catch (err) {
             throw err;
         }
+    },
+    getOrder: async (order_id) => {
+        try {
+            return db.query(`SELECT p.name, p.price
+                             FROM products p
+                                      JOIN
+                                  products_has_commands phc ON p.id = phc.products_id
+                             WHERE phc.commands_id = $order_id;`).all({$order_id: order_id});
+        } catch (err) {
+            throw err;
+        }
     }
 }
 
