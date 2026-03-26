@@ -15,10 +15,9 @@ export const CatalogModel = {
             // add to 'products_has_commands' table
             const productIds = db.query("SELECT products_id FROM cart_items WHERE clients_id = $client_id").all({$client_id: client_id});
             productIds.map(p => {
-                db.query(`INSERT INTO products_has_commands (commands_id, products_id)
-                        VALUES ($orderId, $productsId)`).get({
-                    $orderId: orderId,
-                    $productsId: p.products_id
+                db.query(`INSERT INTO products_has_commands (products_id, commands_id) VALUES ($productsId, $orderId)`).get({
+                    $productsId: p.products_id,
+                    $orderId: orderId
                 });
             })
 

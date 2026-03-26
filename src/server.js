@@ -51,10 +51,13 @@ const server = serve({
             await CartController.addToCart(clientId, productId, quantity);
             return new Response("Added to cart", { status: 200 });
         },
-        "/api/command/add": async (req) => {
+        "/api/order/add": async (req) => {
             let { status, address, clientId } = await req.json();
-            await CatalogController.createOrder(status, address, clientId);
-            return new Response("Order made", { status: 200 });
+            const order_id = await CatalogController.createOrder(status, address, clientId);
+            return Response.json({
+                message: "Order successful",
+                order_id: order_id
+            }, {status: 200});
         },
         "/api/order/:id": async (req) => {
             const id = req.params.id;
