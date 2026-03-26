@@ -60,7 +60,11 @@ Registry Path: ghcr.io/<OWNER>/<REPOSITORY>
     └───models
 ```
 
-## 1.5. Contact
+# 1.5. Security
+
+All security measures are documented on the Wiki
+
+## 1.6. Contact
 
 * Gaëtan: gaetan.gendroz@eduvaud.ch
 * Nathan: nathan.filipowitz@eduvaud.ch
