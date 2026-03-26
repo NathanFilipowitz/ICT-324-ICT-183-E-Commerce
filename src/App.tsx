@@ -12,7 +12,7 @@ export function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/product" element={<ProductPage />} />
-            <Route path="/checkout/:id" element={<CheckoutPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/order/:id" element={<OrderResumePage />} />
             <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
