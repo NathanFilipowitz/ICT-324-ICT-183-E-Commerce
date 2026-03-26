@@ -32,7 +32,6 @@ export default function CheckoutPage() {
             const order = await response.json()
 
             if (!response.ok) throw new Error("Failed to create command");
-            alert(`Order is successful !`);
             navigate(`/order/${order.order_id}`);
         } catch (error) {
             console.error("Order Error:", error);
