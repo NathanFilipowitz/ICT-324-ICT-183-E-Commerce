@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {
     Container,
     Header,
@@ -15,17 +15,20 @@ import 'rsuite/dist/rsuite.min.css';
 export default function CheckoutPage() {
     const navigate = useNavigate();
     const [cart, setCart] = useState([]);
-    const {id} = useParams();
+    const clientId = localStorage.getItem("user_id");
 
     const handlePayment = async () => {
         try {
+            if (!clientId) {
+                return Error("No client id found...")
+            }
             const response = await fetch('/api/order/add', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     status: 'Processing',
                     address: "Rue Cathédrale 24, 1000 Lausanne, Switzerland",
-                    clientId: id,
+                    clientId: clientId,
                 })
             });
 
@@ -41,13 +44,13 @@ export default function CheckoutPage() {
     useEffect(() => {
         // Method to call async function in useEffect
         async function getCart() {
-            const result = await fetch(`/api/cart/${id}`);
+            const result = await fetch(`/api/cart/${clientId}`);
             const product = await result.json()
             setCart(product);
         }
 
         getCart();
-    }, [id])
+    }, [clientId])
 
     return (
         <Container>

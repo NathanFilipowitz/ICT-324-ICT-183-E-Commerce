@@ -62,7 +62,7 @@ export default function HomePage() {
 
     const handleAddToCart = async (product) => {
         // Check if user is logged in (not secured because user can modify this data himself easily !)
-        const storedUser = localStorage.getItem("userId");
+        const storedUser = localStorage.getItem("user_id");
 
         if (!storedUser) {
             // Redirect to login if no user found

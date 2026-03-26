@@ -26,26 +26,25 @@ export default function ProductPage() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [product, setProduct] = useState([]);
     const [quantity, setQuantity] = useState(0);
-    const id = searchParams.get('id');
+    const productId = searchParams.get('id');
 
     const handleAddToCart = async (product) => {
         // Check if user is logged in (not secured because user can modify this data himself easily !)
-        const storedUser = localStorage.getItem("userId");
+        const storedUser = localStorage.getItem("user_id");
 
-        // if (!storedUser) {
-        //     // Redirect to login if no user found
-        //     alert("Please login to add items to your cart!");
-        //     navigate("/login");
-        //     return;
-        // }
+        if (!storedUser) {
+            // Redirect to login if no user found
+            alert("Please login to add items to your cart!");
+            navigate("/login");
+            return;
+        }
 
         try {
             const response = await fetch('/api/cart/add', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    // clientId: parseInt(storedUser),
-                    clientId: 1,            // For testing purposes
+                    clientId: parseInt(storedUser),
                     productId: product.id,
                     quantity: quantity
                 })
@@ -69,13 +68,13 @@ export default function ProductPage() {
     useEffect(() => {
         // Method to call async function in useEffect
         async function getProduct() {
-            const result = await fetch(`/api/product/${id}`);
+            const result = await fetch(`/api/product/${productId}`);
             const product = await result.json()
             setProduct(product);
         }
 
         getProduct();
-    }, [id])
+    }, [productId])
 
     return (
         <>
@@ -94,7 +93,6 @@ export default function ProductPage() {
                     <AppNavbar
                         position={'sticky'}
                         top={0}
-                        clientId={1}        // For testing purpose
                     />
                 </Header>
                 <Grid fluid>

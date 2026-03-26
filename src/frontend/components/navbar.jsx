@@ -4,20 +4,22 @@
  * Date: 2026-03-17
  * Purpose: Reusable Navbar component
  */
-import { useState, useEffect } from "react";
+import {useState} from "react";
 import {Nav, Navbar, Drawer, List, HStack, Avatar, Text, Button} from "rsuite";
 import { useNavigate } from "react-router-dom";
 import 'rsuite/dist/rsuite.min.css';
 
-export function AppNavbar({userCart, clientId}) {
+export function AppNavbar() {
     const navigate = useNavigate();
     const [size, setSize] = useState();
     const [open, setOpen] = useState(false);
     const [placement, setPlacement] = useState('right');
     const [cart, setCart] = useState([]);
+    const [clientId, setClientId] = useState(parseInt(localStorage.getItem("user_id")))
 
 
     const fetchCart = async () => {
+        console.log(Number.isInteger(clientId))
         if (!clientId) return;
         try {
             const response = await fetch(`/api/cart/${clientId}`);
@@ -45,12 +47,6 @@ export function AppNavbar({userCart, clientId}) {
                 <Drawer size={size} placement={placement} open={open} onClose={() => setOpen(false)}>
                     <Drawer.Header>
                         <Drawer.Title>$user_name Cart</Drawer.Title>
-                        {/*<Drawer.Actions>*/}
-                        {/*    <Button onClick={() => setOpen(false)}>Cancel</Button>*/}
-                        {/*    <Button onClick={() => setOpen(false)} appearance="primary">*/}
-                        {/*        Confirm*/}
-                        {/*    </Button>*/}
-                        {/*</Drawer.Actions>*/}
                     </Drawer.Header>
                     <Drawer.Body>
                         <List>
@@ -74,7 +70,7 @@ export function AppNavbar({userCart, clientId}) {
                         <Button
                             marginTop={30}
                             appearance={'primary'}
-                            onClick={() => navigate(`/checkout/${clientId}`)}
+                            onClick={() => navigate(`/checkout`)}
                         >
                             Checkout
                         </Button>
