@@ -5,7 +5,7 @@
  * Purpose: Controller for the shop
  */
 
-import {ProductModel, CartModel, CatalogModel} from "../models/shop.model.js"
+import {ProductModel, CartModel, CatalogModel, SecurityModel} from "../models/shop.model.js"
 
 export const CatalogController = {
     createOrder: async (status, address, client_id) => {
@@ -27,10 +27,6 @@ export const ProductController = {
         const product = await ProductModel.getProductById(id);
         if (!product) throw new Error("Product not found");
         return product;
-    },
-
-    remove: async (id) => {
-        return await ProductModel.deleteProduct(id);
     }
 };
 
@@ -42,5 +38,13 @@ export const CartController = {
     },
     addToCart: async (clientId, productId, quantity) => {
         return await CartModel.addToCart(clientId, productId, quantity);
+    }
+}
+
+export const SecurityController = {
+    isUserOrderRelated: async (clientId, orderId) => {
+        const data = await SecurityModel.isUserOrderRelated(clientId, orderId);
+
+        return (data.length > 0)
     }
 }

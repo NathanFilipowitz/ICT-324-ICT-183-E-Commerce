@@ -86,3 +86,15 @@ export const CartModel = {
         }
     }
 }
+
+export const SecurityModel = {
+    isUserOrderRelated: async (clientId, orderId) => {
+        try {
+            return db.query(`SELECT *
+                             FROM commands
+                             WHERE id = $orderId AND clients_id = $clientId`).all({$orderId: orderId, $clientId: clientId});
+        } catch (err) {
+            throw err;
+        }
+    }
+}

@@ -8,7 +8,7 @@
 import {serve} from "bun";
 import index from "./index.html";
 import {setupDatabase} from "./models/db.ts";
-import {CartController, CatalogController, ProductController} from "@/controllers/shop.controller.js";
+import {CartController, CatalogController, ProductController, SecurityController} from "@/controllers/shop.controller.js";
 import {LoginController} from '@/controllers/login.controller.js'
 
 setupDatabase();
@@ -66,6 +66,14 @@ const server = serve({
             return Response.json({
                 message: "Order retrieved",
                 products: products
+            }, { status: 200 });
+        },
+        "/api/verifier-user-order": async (req) => {
+            let { clientId, orderId } = await req.json();
+            const response = await SecurityController.isUserOrderRelated(clientId, orderId);
+            return Response.json({
+                message: "User checked",
+                verifier: response
             }, { status: 200 });
         },
         "/api/verifier-id": {
