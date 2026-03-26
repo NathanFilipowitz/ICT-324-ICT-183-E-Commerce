@@ -61,8 +61,8 @@ export default function CheckoutPage() {
             <Content>
                 <VStack alignItems={'center'}>
                     <List>
-                        {cart.map(product => (
-                            <List.Item key={product.id}>
+                        {cart.map((product, index) => (
+                            <List.Item key={index}>
                                 <HStack spacing={15} alignItems="center">
                                     <Avatar src={product.avatar} alt={product.sender} circle/>
                                     <HStack.Item flex={1}>
