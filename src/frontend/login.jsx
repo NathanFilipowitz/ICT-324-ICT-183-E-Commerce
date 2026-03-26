@@ -1,17 +1,79 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Container, Form, ButtonToolbar, Button, PasswordInput } from 'rsuite';
+import 'rsuite/dist/rsuite.min.css';
+
+// 🔹 Déplacé en dehors
+const FormField = ({ name, label, text, ...props }) => (
+    <Form.Group controlId={name}>
+        <Form.Label>{label}</Form.Label>
+        <Form.Control name={name} {...props} />
+        {text && <Form.Text>{text}</Form.Text>}
+    </Form.Group>
+);
 
 export default function LoginPage() {
     const navigate = useNavigate();
 
+    const [formValue, setFormValue] = useState({ name: '', password: '' });
+    const [error, setError] = useState('');
+
+    const handleLogin = async () => {
+        setError('');
+
+        if (!formValue.name) {
+            setError("Nom d'utilisateur requis");
+            return;
+        }
+
+        try {
+            const res = await fetch('http://localhost:3000/api/verifier-id', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username: formValue.name,
+                    password: formValue.password
+                })
+            });
+
+            const data = await res.json();
+
+            if (!data.valide) {
+                setError("Utilisateur ou mot de passe invalide");
+                return;
+            }
+
+            navigate(`/home/${formValue.name}`);
+
+        } catch (err) {
+            setError("Erreur serveur");
+        }
+    };
+
     return (
-        <div style={{ padding: '40px', textAlign: 'center' }}>
-            <h1>Login Page</h1>
-            <button
-                onClick={() => navigate("/home")}
-                style={{ padding: '10px 20px' }}
-            >
-                Login
-            </button>
-        </div>
+        <Container style={{ maxWidth: 400, marginTop: 100 }}>
+            <Form formValue={formValue} onChange={setFormValue}>
+                <FormField
+                    name="name"
+                    label="Utilisateur"
+                    text={error || "Nom d'utilisateur requis."}
+                />
+
+                <FormField
+                    name="password"
+                    label="Mot de passe"
+                    accepter={PasswordInput}
+                    text="Mot de passe requis."
+                />
+
+                <Form.Group>
+                    <ButtonToolbar>
+                        <Button appearance="primary" onClick={handleLogin}>
+                            Login
+                        </Button>
+                    </ButtonToolbar>
+                </Form.Group>
+            </Form>
+        </Container>
     );
 }
