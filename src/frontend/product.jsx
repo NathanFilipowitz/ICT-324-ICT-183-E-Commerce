@@ -80,18 +80,20 @@ export default function ProductPage() {
     return (
         <>
             <Button
-                appearance='default'
+                appearance='ghost'
                 onClick={() => navigate("/home")}
                 marginTop={20}
                 position={'absolute'}
-                top={10}
-                left={20}
+                top={70}
+                left={50}
             >
-                Back to catalog
+                Back
             </Button>
-            <Container style={{ padding: '20px 50px' }}>
-                <Header position={'top'}>
+            <Container minHeight={'100vh'} style={{ padding: '20px 50px' }}>
+                <Header marginBottom={50}>
                     <AppNavbar
+                        position={'sticky'}
+                        top={0}
                         clientId={1}        // For testing purpose
                     />
                 </Header>
