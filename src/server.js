@@ -8,7 +8,7 @@
 import {serve} from "bun";
 import index from "./index.html";
 import {setupDatabase} from "./models/db.ts";
-import {ProductController} from "@/controllers/shop.controller.js";
+import {CartController, CatalogController, ProductController} from "@/controllers/shop.controller.js";
 
 setupDatabase();
 
@@ -43,13 +43,29 @@ const server = serve({
             }
         },
         "/api/cart/:clientId": async (req) => {
-            const cart = await ProductController.getCart(req.params.clientId);
+            const cart = await CartController.getCart(req.params.clientId);
             return Response.json(cart);
         },
         "/api/cart/add": async (req) => {
-            const { clientId, productId } = await req.json();
-            await ProductController.addToCart(clientId, productId);
+            let { clientId, productId, quantity } = await req.json();
+            await CartController.addToCart(clientId, productId, quantity);
             return new Response("Added to cart", { status: 200 });
+        },
+        "/api/order/add": async (req) => {
+            let { status, address, clientId } = await req.json();
+            const order_id = await CatalogController.createOrder(status, address, clientId);
+            return Response.json({
+                message: "Order successful",
+                order_id: order_id
+            }, {status: 200});
+        },
+        "/api/order/:id": async (req) => {
+            const id = req.params.id;
+            const products = await CatalogController.getOrder(id);
+            return Response.json({
+                message: "Order retrieved",
+                products: products
+            }, { status: 200 });
         },
         "/*": index,
     },
