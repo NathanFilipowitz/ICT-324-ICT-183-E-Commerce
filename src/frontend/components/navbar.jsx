@@ -30,6 +30,15 @@ export function AppNavbar() {
         }
     };
 
+    const handleLogin = () => {
+        if (!Number.isInteger(clientId)) {
+            navigate("/login")
+        } else {
+            localStorage.setItem("user_id", null);
+            setClientId(null);
+        }
+    }
+
     const handleOpen = value => {
         fetchCart();
         setSize(value);
@@ -41,7 +50,7 @@ export function AppNavbar() {
             <Navbar.Brand>SecureShop</Navbar.Brand>
             <Nav>
                 <Nav.Item onClick={() => navigate("/product")}>All Products</Nav.Item>
-                <Nav.Item onClick={() => navigate("/login")}>Login</Nav.Item>
+                <Nav.Item onClick={() => handleLogin()}>{Number.isInteger(clientId) ? "Logout":"Login"}</Nav.Item>
                 <Nav.Item onClick={() => handleOpen()}>Cart</Nav.Item>
 
                 <Drawer size={size} placement={placement} open={open} onClose={() => setOpen(false)}>
