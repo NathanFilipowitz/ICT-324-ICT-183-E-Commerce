@@ -4,7 +4,7 @@ import HomePage from './frontend/home'
 import LoginPage from './frontend/login'
 import ProductPage from './frontend/product'
 import CheckoutPage from './frontend/checkout'
-import OrderResumePage from "@/frontend/order-resume";
+import OrderResumePage from "./frontend/order-resume";
 
 export function App() {
     return (
