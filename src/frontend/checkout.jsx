@@ -15,11 +15,11 @@ import 'rsuite/dist/rsuite.min.css';
 export default function CheckoutPage() {
     const navigate = useNavigate();
     const [cart, setCart] = useState([]);
-    const clientId = localStorage.getItem("user_id");
+    const clientId = parseInt(localStorage.getItem("user_id"));
 
     const handlePayment = async () => {
         try {
-            if (!clientId) {
+            if (!Number.isInteger(clientId)) {
                 return Error("No client id found...")
             }
             const response = await fetch('/api/order/add', {

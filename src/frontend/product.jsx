@@ -30,9 +30,9 @@ export default function ProductPage() {
 
     const handleAddToCart = async (product) => {
         // Check if user is logged in (not secured because user can modify this data himself easily !)
-        const storedUser = localStorage.getItem("user_id");
+        const clientId = parseInt(localStorage.getItem("user_id"));
 
-        if (!storedUser) {
+        if (!Number.isInteger(clientId)) {
             // Redirect to login if no user found
             alert("Please login to add items to your cart!");
             navigate("/login");
@@ -44,7 +44,7 @@ export default function ProductPage() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    clientId: parseInt(storedUser),
+                    clientId: parseInt(clientId),
                     productId: product.id,
                     quantity: quantity
                 })
