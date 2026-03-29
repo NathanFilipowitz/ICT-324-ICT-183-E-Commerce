@@ -78,14 +78,6 @@ const server = serve({
                 return err
             }
         },
-        // "/api/verifier-user-order": async (req) => {
-        //     let {orderId} = await req.json();
-        //     const response = await SecurityController.isUserOrderRelated(orderId);
-        //     return Response.json({
-        //         message: "User processed",
-        //         verifier: response
-        //     }, {status: 200});
-        // },
         "/api/verifier-id": {
             POST: async (req) => {
                 try {
