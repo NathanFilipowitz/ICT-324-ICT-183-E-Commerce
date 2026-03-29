@@ -8,7 +8,11 @@
 import {serve} from "bun";
 import index from "./index.html";
 import {setupDatabase} from "./models/db.ts";
-import {CartController, CatalogController, ProductController, SecurityController} from "@/controllers/shop.controller.js";
+import {
+    CartController,
+    CatalogController,
+    ProductController
+} from "@/controllers/shop.controller.js";
 import {LoginController} from '@/controllers/login.controller.js'
 
 setupDatabase();
@@ -48,12 +52,12 @@ const server = serve({
             return Response.json(cart);
         },
         "/api/cart/add": async (req) => {
-            let { clientId, productId, quantity } = await req.json();
+            let {clientId, productId, quantity} = await req.json();
             await CartController.addToCart(clientId, productId, quantity);
-            return new Response("Added to cart", { status: 200 });
+            return new Response("Added to cart", {status: 200});
         },
         "/api/order/add": async (req) => {
-            let { status, address, clientId } = await req.json();
+            let {status, address, clientId} = await req.json();
             const order_id = await CatalogController.createOrder(status, address, clientId);
             return Response.json({
                 message: "Order successful",
@@ -61,54 +65,60 @@ const server = serve({
             }, {status: 200});
         },
         "/api/order/:id": async (req) => {
-            const id = req.params.id;
-            const products = await CatalogController.getOrder(id);
-            return Response.json({
-                message: "Order retrieved",
-                products: products
-            }, { status: 200 });
+            try {
+                const products = await CatalogController.getOrder(req);
+
+                if (products.length > 0) {
+                    return Response.json({
+                        message: "Order retrieved",
+                        products: products
+                    }, {status: 200});
+                }
+            } catch (err) {
+                return err
+            }
         },
-        "/api/verifier-user-order": async (req) => {
-            let { clientId, orderId } = await req.json();
-            const response = await SecurityController.isUserOrderRelated(clientId, orderId);
-            return Response.json({
-                message: "User checked",
-                verifier: response
-            }, { status: 200 });
-        },
+        // "/api/verifier-user-order": async (req) => {
+        //     let {orderId} = await req.json();
+        //     const response = await SecurityController.isUserOrderRelated(orderId);
+        //     return Response.json({
+        //         message: "User processed",
+        //         verifier: response
+        //     }, {status: 200});
+        // },
         "/api/verifier-id": {
             POST: async (req) => {
                 try {
                     const body = await req.json();
-                    const { username, password } = body;
+                    const {username, password} = body;
 
                     if (!username || !password) {
                         return new Response(
-                            JSON.stringify({ error: "Champs manquants" }),
-                            { status: 400 }
+                            JSON.stringify({error: "Champs manquants"}),
+                            {status: 400}
                         );
                     }
 
-                    const id = LoginController.checkUser(username, password);
+                    const user = LoginController.checkUser(username, password);
 
-                    return Response.json({ user_id: id });
+                    return Response.json({token: user.token});
 
                     if (!username) {
                         return new Response(
-                            JSON.stringify({ error: "Nom manquant" }),
-                            { status: 400 }
+                            JSON.stringify({error: "Nom manquant"}),
+                            {status: 400}
                         );
                     }
 
                     const existe = LoginController.checkUser(username);
 
-                    return Response.json({ existe });
+                    return Response.json({existe});
 
                 } catch (err) {
                     console.error(err);
                     return new Response(
-                        JSON.stringify({ error: "Erreur serveur" }),
-                        { status: 500 }
+                        JSON.stringify({error: "Erreur serveur"}),
+                        {status: 500}
                     );
                 }
             }

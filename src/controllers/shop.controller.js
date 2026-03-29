@@ -5,14 +5,34 @@
  * Purpose: Controller for the shop
  */
 
+import jwt from 'jsonwebtoken'
 import {ProductModel, CartModel, CatalogModel, SecurityModel} from "../models/shop.model.js"
 
 export const CatalogController = {
     createOrder: async (status, address, client_id) => {
         return await CatalogModel.createOrder(status, address, client_id);
     },
-    getOrder: async (client_id) => {
-        return await CatalogModel.getOrder(client_id);
+    getOrder: async (req) => {
+        const orderId = req.params.id;
+
+        // verify user (broken access control)
+        const user = authenticateToken(req);
+
+        if (!user) {
+            const err = new Error("Unauthorized")
+            err.status = 401;
+            throw err;
+        }
+
+        const isOrderClientRelated = await SecurityModel.isUserOrderRelated(user.id, orderId);
+
+        if (!isOrderClientRelated) {
+            const err = new Error("User not permitted to access this page.")
+            err.status = 400;
+            throw err;
+        }
+
+        return await CatalogModel.getOrder(orderId);
     }
 }
 
@@ -41,10 +61,15 @@ export const CartController = {
     }
 }
 
-export const SecurityController = {
-    isUserOrderRelated: async (clientId, orderId) => {
-        const data = await SecurityModel.isUserOrderRelated(clientId, orderId);
+const authenticateToken = (req) => {
+    const authHeader = req.headers.get("Authorization");
+    const token = authHeader && authHeader.split(' ')[1];
 
-        return (data.length > 0)
+    if (!token) return null;
+
+    try {
+        return jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    } catch (err) {
+        return null;
     }
-}
+};

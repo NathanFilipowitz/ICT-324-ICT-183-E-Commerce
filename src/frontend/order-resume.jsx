@@ -16,35 +16,25 @@ export default function OrderResumePage() {
     const navigate = useNavigate();
     const [order, setOrder] = useState([]);
     const {id} = useParams();
-    const clientId = parseInt(localStorage.getItem("user_id"));
+    const clientToken = localStorage.getItem("JWT");
 
     useEffect(() => {
         // Method to call async function in useEffect
         async function getOrder() {
-            const orderResponse = await fetch(`/api/order/${id}`);
-            const order = await orderResponse.json()
-
-            if (!Number.isInteger(clientId)) {
-                return Error("No client id found...")
+            if (clientToken === "") {
+                return Error("No client found...")
             }
 
-            // verify user (broken access control)
-            const verifierResponse = await fetch('/api/verifier-user-order', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    clientId: clientId,
-                    orderId: id
-                })
+            const response = await fetch(`/api/order/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${clientToken}`
+                }
             });
-            const verified = await verifierResponse.json()
 
-            if (verified.verifier) {
-                setOrder(order.products);
-            } else {
-                alert("Not permitted to view this order...")
-                navigate('/home');
-            }
+            const order = await response.json()
+            setOrder(order.products);
         }
 
         getOrder();
