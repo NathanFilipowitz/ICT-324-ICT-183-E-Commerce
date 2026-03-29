@@ -90,9 +90,11 @@ export const CartModel = {
 export const SecurityModel = {
     isUserOrderRelated: async (clientId, orderId) => {
         try {
-            return db.query(`SELECT *
+            const response = db.query(`SELECT *
                              FROM commands
                              WHERE id = $orderId AND clients_id = $clientId`).all({$orderId: orderId, $clientId: clientId});
+
+            return response.length > 0
         } catch (err) {
             throw err;
         }
