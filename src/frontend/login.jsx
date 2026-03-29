@@ -38,12 +38,12 @@ export default function LoginPage() {
 
             const data = await res.json();
 
-            if (!data.user_id) {
+            if (!data.token) {
                 alert("Utilisateur ou mot de passe invalide");
                 return;
             }
 
-            localStorage.setItem("user_id", data.user_id);
+            localStorage.setItem("JWT", data.token);
             navigate(`/home`);
 
         } catch (err) {

@@ -80,35 +80,35 @@ const server = serve({
             POST: async (req) => {
                 try {
                     const body = await req.json();
-                    const { username, password } = body;
+                    const {username, password} = body;
 
                     if (!username || !password) {
                         return new Response(
-                            JSON.stringify({ error: "Champs manquants" }),
-                            { status: 400 }
+                            JSON.stringify({error: "Champs manquants"}),
+                            {status: 400}
                         );
                     }
 
-                    const id = LoginController.checkUser(username, password);
+                    const user = LoginController.checkUser(username, password);
 
-                    return Response.json({ user_id: id });
+                    return Response.json({token: user.token});
 
                     if (!username) {
                         return new Response(
-                            JSON.stringify({ error: "Nom manquant" }),
-                            { status: 400 }
+                            JSON.stringify({error: "Nom manquant"}),
+                            {status: 400}
                         );
                     }
 
                     const existe = LoginController.checkUser(username);
 
-                    return Response.json({ existe });
+                    return Response.json({existe});
 
                 } catch (err) {
                     console.error(err);
                     return new Response(
-                        JSON.stringify({ error: "Erreur serveur" }),
-                        { status: 500 }
+                        JSON.stringify({error: "Erreur serveur"}),
+                        {status: 500}
                     );
                 }
             }
