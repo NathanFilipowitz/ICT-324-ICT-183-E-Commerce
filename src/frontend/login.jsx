@@ -57,13 +57,13 @@ export default function LoginPage() {
     return (
         <Container style={{ maxWidth: 400, marginTop: 100 }}>
             <Form formValue={formValue} onChange={setFormValue}>
-                <FormField
+                <Form.Control
                     name="name"
                     label="Utilisateur"
                     text={error || "Nom d'utilisateur requis."}
                 />
 
-                <FormField
+                <Form.Control
                     name="password"
                     label="Mot de passe"
                     accepter={PasswordInput}

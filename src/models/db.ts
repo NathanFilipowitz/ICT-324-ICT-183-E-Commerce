@@ -66,7 +66,8 @@ export function setupDatabase() {
         (7, 'George Miller', 'gmiller', 'madmax303'),
         (8, 'Hannah Abbott', 'habbott', 'huffle404'),
         (9, 'Ian Wright', 'iwright', 'arsenal505'),
-        (10, 'Julia Roberts', 'jroberts', 'pretty606');
+        (10, 'Julia Roberts', 'jroberts', 'pretty606'),
+        (11, 'Ervé Sayer', 'esayer', '71b4e190fc7a0aa86f24cb18d88c09bfd8a45292f1ae434fac3c0351f4d838d3');
     `);
 
     db.run(`

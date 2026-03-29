@@ -4,7 +4,7 @@ export const LoginController = {
     checkUser: (username, password) => {
         const user = UserModel.getUser(username);
 
-        if (!user || user.password !== password) return false;     // simple (pas sécurisé mais OK pour projet)
+        if (!user || user.password !== password) return false;
 
         return user.id;
     }
