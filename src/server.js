@@ -8,7 +8,11 @@
 import {serve} from "bun";
 import index from "./index.html";
 import {setupDatabase} from "./models/db.ts";
-import {CartController, CatalogController, ProductController, SecurityController} from "@/controllers/shop.controller.js";
+import {
+    CartController,
+    CatalogController,
+    ProductController
+} from "@/controllers/shop.controller.js";
 import {LoginController} from '@/controllers/login.controller.js'
 
 setupDatabase();
@@ -48,12 +52,12 @@ const server = serve({
             return Response.json(cart);
         },
         "/api/cart/add": async (req) => {
-            let { clientId, productId, quantity } = await req.json();
+            let {clientId, productId, quantity} = await req.json();
             await CartController.addToCart(clientId, productId, quantity);
-            return new Response("Added to cart", { status: 200 });
+            return new Response("Added to cart", {status: 200});
         },
         "/api/order/add": async (req) => {
-            let { status, address, clientId } = await req.json();
+            let {status, address, clientId} = await req.json();
             const order_id = await CatalogController.createOrder(status, address, clientId);
             return Response.json({
                 message: "Order successful",
@@ -61,21 +65,27 @@ const server = serve({
             }, {status: 200});
         },
         "/api/order/:id": async (req) => {
-            const id = req.params.id;
-            const products = await CatalogController.getOrder(id);
-            return Response.json({
-                message: "Order retrieved",
-                products: products
-            }, { status: 200 });
+            try {
+                const products = await CatalogController.getOrder(req);
+
+                if (products.length > 0) {
+                    return Response.json({
+                        message: "Order retrieved",
+                        products: products
+                    }, {status: 200});
+                }
+            } catch (err) {
+                return err
+            }
         },
-        "/api/verifier-user-order": async (req) => {
-            let { clientId, orderId } = await req.json();
-            const response = await SecurityController.isUserOrderRelated(clientId, orderId);
-            return Response.json({
-                message: "User checked",
-                verifier: response
-            }, { status: 200 });
-        },
+        // "/api/verifier-user-order": async (req) => {
+        //     let {orderId} = await req.json();
+        //     const response = await SecurityController.isUserOrderRelated(orderId);
+        //     return Response.json({
+        //         message: "User processed",
+        //         verifier: response
+        //     }, {status: 200});
+        // },
         "/api/verifier-id": {
             POST: async (req) => {
                 try {
