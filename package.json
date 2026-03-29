@@ -2,7 +2,22 @@
   "name": "bun-react-template",
   "version": "0.1.0",
   "private": true,
+  "description": "This project is designed to create an e-commerce platform that allows users to browse products, \r add them to a shopping cart, and complete purchases securely. The application will feature user authentication, \r product management, order processing, and payment integration.",
+  "homepage": "https://github.com/NathanFilipowitz/ICT-324-ICT-183-E-Commerce#readme",
+  "bugs": {
+    "url": "https://github.com/NathanFilipowitz/ICT-324-ICT-183-E-Commerce/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NathanFilipowitz/ICT-324-ICT-183-E-Commerce.git"
+  },
+  "license": "ISC",
+  "author": "",
   "type": "module",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
   "scripts": {
     "dev": "bun --hot src/server.js",
     "start": "NODE_ENV=production bun src/server.js",
@@ -10,6 +25,7 @@
   },
   "dependencies": {
     "@rsuite/icons": "^1.4.0",
+    "bcrypt": "^6.0.0",
     "bun": "^1.3.10",
     "bun-plugin-tailwind": "^0.1.2",
     "prop-types": "^15.8.1",

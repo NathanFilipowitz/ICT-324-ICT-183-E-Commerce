@@ -1,4 +1,5 @@
 import db from "../../shop.sqlite" with {type: "sqlite"};
+import bcrypt from "bcrypt";
 
 
 export const LoginModel = {

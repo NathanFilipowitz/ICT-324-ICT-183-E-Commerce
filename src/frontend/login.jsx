@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Form, ButtonToolbar, Button, PasswordInput } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
+import bcrypt from "bcrypt";
 
 // 🔹 Déplacé en dehors
 const FormField = ({ name, label, text, ...props }) => (
@@ -26,13 +27,15 @@ export default function LoginPage() {
             return;
         }
 
+        const cryptpassword = await bcrypt.cryptpassword(formValue.password, 10);
+
         try {
             const res = await fetch('http://localhost:3000/api/verifier-id', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     username: formValue.name,
-                    password: formValue.password
+                    password: cryptpassword
                 })
             });
 
