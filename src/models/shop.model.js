@@ -1,4 +1,6 @@
-import db from "../../shop.sqlite" with {type: "sqlite"};
+import { Database } from "bun:sqlite";
+
+const db = new Database(":memory:");
 
 export const CatalogModel = {
     createOrder: async (status, address, client_id) => {
