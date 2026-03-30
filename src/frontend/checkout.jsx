@@ -11,15 +11,17 @@ import {
     HStack, List, Avatar
 } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
+import {jwtDecode} from "jwt-decode";
 
 export default function CheckoutPage() {
     const navigate = useNavigate();
     const [cart, setCart] = useState([]);
-    const clientId = parseInt(localStorage.getItem("user_id"));
+    const [token, setToken] = useState(localStorage.getItem("JWT"))
+    const [client, setClient] = useState(jwtDecode(token))
 
     const handlePayment = async () => {
         try {
-            if (!Number.isInteger(clientId)) {
+            if (!Number.isInteger(client.id)) {
                 return Error("No client id found...")
             }
             const response = await fetch('/api/order/add', {
@@ -28,7 +30,7 @@ export default function CheckoutPage() {
                 body: JSON.stringify({
                     status: 'Processing',
                     address: "Rue Cathédrale 24, 1000 Lausanne, Switzerland",
-                    clientId: clientId,
+                    clientId: client.id,
                 })
             });
 
@@ -44,13 +46,13 @@ export default function CheckoutPage() {
     useEffect(() => {
         // Method to call async function in useEffect
         async function getCart() {
-            const result = await fetch(`/api/cart/${clientId}`);
+            const result = await fetch(`/api/cart/${client.id}`);
             const product = await result.json()
             setCart(product);
         }
 
         getCart();
-    }, [clientId])
+    }, [token])
 
     return (
         <Container>

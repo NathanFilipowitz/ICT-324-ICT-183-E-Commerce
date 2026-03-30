@@ -16,12 +16,12 @@ export function AppNavbar() {
     const [open, setOpen] = useState(false);
     const [placement, setPlacement] = useState('right');
     const [cart, setCart] = useState([]);
-    const [clientId, setClientId] = useState(null)
     const [token, setToken] = useState(localStorage.getItem("JWT"))
+    const [client, setClient] = useState(jwtDecode(token))
 
     const fetchCart = async () => {
         try {
-            const response = await fetch(`/api/cart/${clientId}`);
+            const response = await fetch(`/api/cart/${client.id}`);
             const data = await response.json();
             setCart(data);
         } catch (error) {
@@ -35,7 +35,7 @@ export function AppNavbar() {
         } else {
             localStorage.removeItem("JWT");
             setToken(null);
-            setClientId(null);
+            setClient(null);
         }
     }
 
@@ -44,13 +44,6 @@ export function AppNavbar() {
         setSize(value);
         setOpen(true);
     };
-
-    useEffect(() => {
-        if (!token) return;
-
-        const {id} = jwtDecode(token);
-        setClientId(id);
-    }, [token]);
 
     return (
         <Navbar>
