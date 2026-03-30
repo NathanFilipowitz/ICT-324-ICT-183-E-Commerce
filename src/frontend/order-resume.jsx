@@ -16,12 +16,12 @@ export default function OrderResumePage() {
     const navigate = useNavigate();
     const [order, setOrder] = useState([]);
     const {id} = useParams();
-    const clientToken = localStorage.getItem("JWT");
+    const token = localStorage.getItem("JWT");
 
     useEffect(() => {
         // Method to call async function in useEffect
         async function getOrder() {
-            if (clientToken === "") {
+            if (token === "") {
                 return Error("No client found...")
             }
 
@@ -29,7 +29,7 @@ export default function OrderResumePage() {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${clientToken}`
+                    'Authorization': `Bearer ${token}`
                 }
             });
 
