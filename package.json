@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@rsuite/icons": "^1.4.0",
+    "bcrypt": "^6.0.0",
     "bun": "^1.3.10",
     "bun-plugin-tailwind": "^0.1.2",
     "jsonwebtoken": "^9.0.3",

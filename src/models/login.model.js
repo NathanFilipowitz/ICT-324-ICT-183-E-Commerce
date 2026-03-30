@@ -1,6 +1,6 @@
 import { Database } from "bun:sqlite";
 
-const db = new Database("shop.sqlite");
+const db = new Database('shop.sqlite');
 
 export const LoginModel = {
 

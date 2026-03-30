@@ -33,6 +33,10 @@ export default function OrderResumePage() {
                 }
             });
 
+            if (response.status === 401) {
+                alert("You are unauthorized to visit this page, please login with correct username.")
+            }
+
             const order = await response.json()
             setOrder(order.products);
         }
