@@ -3,11 +3,14 @@ import {UserModel} from '../models/login.model.js';
 import bcrypt from 'bcrypt';
 
 export const LoginController = {
-    checkUser: (username, password) => {
-        const cryptedpassword = bcrypt.hashSync(password, 10);
-        let user = UserModel.getUser(username);
+    checkUser: async (username, password) => {
+        let user = await UserModel.getUser(username);
 
-        if (!user || user.password !== cryptedpassword) return false;
+        if (!user) return false;
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) return false;
 
         user = {
             id: user.id,
