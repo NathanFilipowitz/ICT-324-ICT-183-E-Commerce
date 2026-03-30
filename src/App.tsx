@@ -26,7 +26,7 @@ export function App() {
             <Route path="/product" element={<ProductPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/order/:id" element={<OrderResumePage />} />
-            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/" element={<Navigate to="/home" />} />
         </Routes>
     );
 }
