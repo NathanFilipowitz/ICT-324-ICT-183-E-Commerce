@@ -1,3 +1,9 @@
+/*
+ * Filename: home.jsx
+ * Authors: Fabian Rostello, Gaëtan Gendroz, Nathan Filipowitz
+ * Date: 2026-03-17
+ * Purpose: Home page view
+ */
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { AppNavbar } from "../frontend/components/navbar.jsx";
