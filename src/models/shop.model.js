@@ -76,13 +76,18 @@ export const CartModel = {
         }
     },
     // AI HELP: generate an SQL way to add to cart, updating quantity instead of duplicating the row
-    addToCart: async (clientId, productId, quantity) => {
+    addToCart: async (clientId, productId, quantity=1) => {
         try {
             return db.run(`
                 INSERT INTO cart_items (clients_id, products_id, quantity)
-                VALUES (${clientId}, ${productId}, ${quantity}) ON CONFLICT(clients_id, products_id) DO
+                VALUES (${clientId}, ${productId}, ${quantity})
+                ON CONFLICT(clients_id, products_id) DO
                 UPDATE SET quantity = quantity + ${quantity}
-            `);
+            `,{
+                $clientId: clientId,
+                $productId: productId,
+                $quantity: quantity
+            });
         } catch (err) {
             throw err;
         }
