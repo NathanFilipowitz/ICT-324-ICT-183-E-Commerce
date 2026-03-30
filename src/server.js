@@ -64,7 +64,7 @@ const server = serve({
                 order_id: order_id
             }, {status: 200});
         },
-        "/api/order/:id": async (req) => {
+        "/api/order/:id": async (req, res) => {
             try {
                 const products = await CatalogController.getOrder(req);
 
@@ -74,8 +74,11 @@ const server = serve({
                         products: products
                     }, {status: 200});
                 }
-            } catch (err) {
-                return err
+            } catch (error) {
+                const errorCode = error.status ? error.status : 500;
+                return Response.json({
+                    error: error.message
+                }, {status: errorCode});
             }
         },
         "/api/verifier-id": {

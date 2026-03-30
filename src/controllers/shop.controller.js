@@ -18,17 +18,10 @@ export const CatalogController = {
         // verify user (broken access control)
         const user = authenticateToken(req);
 
-        if (!user) {
-            const err = new Error("Unauthorized")
-            err.status = 401;
-            throw err;
-        }
-
         const isOrderClientRelated = await SecurityModel.isUserOrderRelated(user.id, orderId);
-
-        if (!isOrderClientRelated) {
-            const err = new Error("User not permitted to access this page.")
-            err.status = 400;
+        if (!user || !isOrderClientRelated) {
+            const err = new Error("Unauthorized access.")
+            err.status = 401;
             throw err;
         }
 
@@ -64,7 +57,6 @@ export const CartController = {
 const authenticateToken = (req) => {
     const authHeader = req.headers.get("Authorization");
     const token = authHeader && authHeader.split(' ')[1];
-
     if (!token) return null;
 
     try {

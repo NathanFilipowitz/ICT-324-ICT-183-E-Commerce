@@ -52,7 +52,7 @@ export default function OrderResumePage() {
             <Content>
                 <VStack alignItems={'center'}>
                     <List>
-                        {order.map((product, index) => (
+                        {order && order.map((product, index) => (
                             <List.Item key={index}>
                                 <HStack spacing={15} alignItems="center">
                                     <Avatar src={product.avatar} alt={product.sender} circle/>

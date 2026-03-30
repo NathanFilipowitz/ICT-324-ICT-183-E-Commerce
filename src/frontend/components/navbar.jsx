@@ -4,10 +4,11 @@
  * Date: 2026-03-17
  * Purpose: Reusable Navbar component
  */
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Nav, Navbar, Drawer, List, HStack, Avatar, Text, Button} from "rsuite";
 import { useNavigate } from "react-router-dom";
 import 'rsuite/dist/rsuite.min.css';
+import {jwtDecode} from "jwt-decode";
 
 export function AppNavbar() {
     const navigate = useNavigate();
@@ -15,12 +16,10 @@ export function AppNavbar() {
     const [open, setOpen] = useState(false);
     const [placement, setPlacement] = useState('right');
     const [cart, setCart] = useState([]);
-    const [clientId, setClientId] = useState(parseInt(localStorage.getItem("user_id")))
-
+    const [clientId, setClientId] = useState(null)
+    const [token, setToken] = useState(localStorage.getItem("JWT"))
 
     const fetchCart = async () => {
-        console.log(Number.isInteger(clientId))
-        if (!clientId) return;
         try {
             const response = await fetch(`/api/cart/${clientId}`);
             const data = await response.json();
@@ -31,10 +30,11 @@ export function AppNavbar() {
     };
 
     const handleLogin = () => {
-        if (!Number.isInteger(clientId)) {
+        if (!token) {
             navigate("/login")
         } else {
-            localStorage.setItem("user_id", null);
+            localStorage.removeItem("JWT");
+            setToken(null);
             setClientId(null);
         }
     }
@@ -45,12 +45,19 @@ export function AppNavbar() {
         setOpen(true);
     };
 
+    useEffect(() => {
+        if (!token) return;
+
+        const {id} = jwtDecode(token);
+        setClientId(id);
+    }, [token]);
+
     return (
         <Navbar>
             <Navbar.Brand>SecureShop</Navbar.Brand>
             <Nav>
                 <Nav.Item onClick={() => navigate("/product")}>All Products</Nav.Item>
-                <Nav.Item onClick={() => handleLogin()}>{Number.isInteger(clientId) ? "Logout":"Login"}</Nav.Item>
+                <Nav.Item onClick={() => handleLogin()}>{!token ? "Login":"Logout"}</Nav.Item>
                 <Nav.Item onClick={() => handleOpen()}>Cart</Nav.Item>
 
                 <Drawer size={size} placement={placement} open={open} onClose={() => setOpen(false)}>
