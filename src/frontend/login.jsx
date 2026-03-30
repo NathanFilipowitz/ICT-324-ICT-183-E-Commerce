@@ -32,8 +32,9 @@ export default function LoginPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     username: formValue.name,
-                    password: formValue.password
+                    password: formValue.password,
                 })
+
             });
 
             const data = await res.json();
