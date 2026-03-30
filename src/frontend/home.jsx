@@ -1,8 +1,15 @@
+/*
+ * Filename: home.jsx
+ * Authors: Fabian Rostello, Gaëtan Gendroz, Nathan Filipowitz
+ * Date: 2026-03-17
+ * Purpose: Home page view
+ */
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { AppNavbar } from "../frontend/components/navbar.jsx";
 import { ProductCard } from "../frontend/components/product-card.jsx";
 import 'rsuite/dist/rsuite.min.css';
+import {jwtDecode} from "jwt-decode";
 
 export default function HomePage() {
     const navigate = useNavigate();
@@ -24,9 +31,9 @@ export default function HomePage() {
 
     const handleAddToCart = async (product) => {
         // Check if user is logged in (not secured because user can modify this data himself easily !)
-        const storedUser = localStorage.getItem("user_id");
+        const token = localStorage.getItem("JWT");
 
-        if (!storedUser) {
+        if (!token) {
             // Redirect to login if no user found
             alert("Please login to add items to your cart!");
             navigate("/login");
@@ -34,11 +41,14 @@ export default function HomePage() {
         }
 
         try {
+            const decoded = jwtDecode(token);
+            const clientId = decoded.id;
+
             const response = await fetch('/api/cart/add', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
-                    clientId: parseInt(storedUser), 
+                    clientId: clientId, 
                     productId: product.id 
                 })
             });
