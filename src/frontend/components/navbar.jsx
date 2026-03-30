@@ -49,7 +49,6 @@ export function AppNavbar() {
         <Navbar>
             <Navbar.Brand>SecureShop</Navbar.Brand>
             <Nav>
-                <Nav.Item onClick={() => navigate("/product")}>All Products</Nav.Item>
                 <Nav.Item onClick={() => handleLogin()}>{!token ? "Login":"Logout"}</Nav.Item>
                 <Nav.Item onClick={() => handleOpen()}>Cart</Nav.Item>
 
