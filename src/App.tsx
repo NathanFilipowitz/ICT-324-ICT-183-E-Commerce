@@ -5,8 +5,20 @@ import LoginPage from './frontend/login'
 import ProductPage from './frontend/product'
 import CheckoutPage from './frontend/checkout'
 import OrderResumePage from "./frontend/order-resume";
+import {useEffect} from "react";
+import {jwtDecode} from "jwt-decode";
 
 export function App() {
+    useEffect(() => {
+        const token = localStorage.getItem("JWT");
+        if (token) {
+            const { exp } = jwtDecode(token);
+            if (exp && Date.now() >= exp * 1000) {
+                localStorage.removeItem("JWT");
+            }
+        }
+    }, []);
+
     return (
         <Routes>
             <Route path="/login" element={<LoginPage />} />
