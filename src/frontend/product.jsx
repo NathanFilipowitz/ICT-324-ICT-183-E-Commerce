@@ -13,8 +13,7 @@ import {
     Center,
     Image,
     Heading,
-    Text,
-    HStack
+    Text
 } from 'rsuite';
 import {FaPlus, FaMinus} from 'react-icons/fa';
 import {loremIpsum} from 'react-lorem-ipsum';
@@ -25,7 +24,7 @@ export default function ProductPage() {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const [product, setProduct] = useState([]);
-    const [quantity, setQuantity] = useState(0);
+    const [quantity, setQuantity] = useState(1);
     const productId = searchParams.get('id');
 
     const handleAddToCart = async (product) => {
@@ -58,15 +57,14 @@ export default function ProductPage() {
     };
 
     const handleMinus = () => {
-        setQuantity(parseInt(quantity, 10) - 1);
+        setQuantity(quantity - 1 < 1 ? 1 : parseInt(quantity, 10) - 1);
     };
     
     const handlePlus = () => {
-        setQuantity(parseInt(quantity, 10) + 1);
+        setQuantity(quantity + 1 > 20 ? 20 : parseInt(quantity, 10) + 1);
     };
 
     useEffect(() => {
-        // Method to call async function in useEffect
         async function getProduct() {
             const result = await fetch(`/api/product/${productId}`);
             const product = await result.json()
