@@ -30,6 +30,14 @@ To start a development server:
 bun dev
 ```
 
+To config `.env` file:
+
+Create a hash and insert it in `ACCESS_TOKEN_SECRET`
+
+```
+ACCESS_TOKEN_SECRET=your_32_character_secret_hash
+```
+
 #### Github Actions
 The project utilizes GitHub Actions for CI/CD. Ensure the following are configured in your repository settings:
 - **Permissions**: The GITHUB_TOKEN must have packages: write permissions to push to GHCR.
