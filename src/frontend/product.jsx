@@ -20,6 +20,7 @@ import {FaPlus, FaMinus} from 'react-icons/fa';
 import {loremIpsum} from 'react-lorem-ipsum';
 import {AppNavbar} from "./components/navbar.jsx";
 import 'rsuite/dist/rsuite.min.css';
+import {jwtDecode} from "jwt-decode";
 
 export default function ProductPage() {
     const navigate = useNavigate();
@@ -27,12 +28,14 @@ export default function ProductPage() {
     const [product, setProduct] = useState([]);
     const [quantity, setQuantity] = useState(0);
     const productId = searchParams.get('id');
+    const [token, setToken] = useState(localStorage.getItem("JWT"))
+    const [client, setClient] = useState(jwtDecode(token))
 
     const handleAddToCart = async (product) => {
         // Check if user is logged in (not secured because user can modify this data himself easily !)
-        const clientId = parseInt(localStorage.getItem("user_id"));
+        // const clientId = parseInt(localStorage.getItem("JWT"));
 
-        if (!Number.isInteger(clientId)) {
+        if (!token || token === "") {
             // Redirect to login if no user found
             alert("Please login to add items to your cart!");
             navigate("/login");
@@ -44,7 +47,7 @@ export default function ProductPage() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    clientId: parseInt(clientId),
+                    clientId: client.id,
                     productId: product.id,
                     quantity: quantity
                 })
