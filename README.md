@@ -14,10 +14,23 @@ List all dependencies and their version needed by the project as :
 
 * DataBase Engine: SQLite
 * IDE used: JetBrains IntelliJ
-* Package manager: bun
+* Package manager: [bun](https://bun.com/docs/installation)
 * OS supported: all (web)
 
 ### 1.2.2. Configuration
+#### Bun
+**Installation**
+
+Mac & Linux:
+```bash
+curl -fsSL https://bun.com/install | bash
+```
+
+Windows (powershell):
+```shell
+powershell -c "irm bun.sh/install.ps1|iex"
+```
+
 #### Environment
 
 To install dependencies:
