@@ -32,9 +32,6 @@ export default function ProductPage() {
     const [client, setClient] = useState(jwtDecode(token))
 
     const handleAddToCart = async (product) => {
-        // Check if user is logged in (not secured because user can modify this data himself easily !)
-        // const clientId = parseInt(localStorage.getItem("JWT"));
-
         if (!token || token === "") {
             // Redirect to login if no user found
             alert("Please login to add items to your cart!");
