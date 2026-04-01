@@ -1,0 +1,103 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Container, Form, ButtonToolbar, Button, PasswordInput } from 'rsuite';
+import 'rsuite/dist/rsuite.min.css';
+
+const FormField = ({ name, label, text, ...props }) => (
+    <Form.Group controlId={name}>
+        <Form.Label>{label}</Form.Label>
+        <Form.Control name={name} {...props} />
+        {text && <Form.Text>{text}</Form.Text>}
+    </Form.Group>
+);
+
+export default function RegisterPage() {
+    const navigate = useNavigate();
+
+    const [formValue, setFormValue] = useState({
+        name: '',
+        firstname: '',
+        password: ''
+    });
+
+    const [error, setError] = useState('');
+
+    const handleRegister = async () => {
+        setError('');
+
+        if (!formValue.name) {
+            setError("Nom d'utilisateur requis");
+            return;
+        }
+
+        if (!formValue.firstname) {
+            setError("Prénom requis");
+            return;
+        }
+
+        if (!formValue.password) {
+            setError("Mot de passe requis");
+            return;
+        }
+        console.log(formValue.name)
+        console.log(formValue.firstname)
+        console.log(formValue.password)
+        try {
+            const res = await fetch('http://localhost:3000/api/enregistrer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username: formValue.name,
+                    firstname: formValue.firstname,
+                    password: formValue.password,
+                })
+            });
+
+            const data = await res.json();
+            console.log(res)
+
+            if (!res.ok) {
+                setError(data.message || "Erreur lors de l'inscription");
+                return;
+            }
+
+            navigate('/login');
+
+        } catch (err) {
+            setError("Erreur serveur");
+        }
+    };
+
+    return (
+        <Container style={{ maxWidth: 400, marginTop: 100 }}>
+            <Form formValue={formValue} onChange={setFormValue}>
+                <FormField
+                    name="name"
+                    label="Utilisateur"
+                    text={error || "Nom d'utilisateur requis."}
+                />
+
+                <FormField
+                    name="firstname"
+                    label="Prénom"
+                    text="Prénom requis."
+                />
+
+                <FormField
+                    name="password"
+                    label="Mot de passe"
+                    accepter={PasswordInput}
+                    text="Mot de passe requis."
+                />
+
+                <Form.Group>
+                    <ButtonToolbar>
+                        <Button appearance="primary" onClick={handleRegister}>
+                            Créer
+                        </Button>
+                    </ButtonToolbar>
+                </Form.Group>
+            </Form>
+        </Container>
+    );
+}

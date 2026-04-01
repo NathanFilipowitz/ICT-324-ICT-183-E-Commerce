@@ -13,7 +13,7 @@ import {
     CatalogController,
     ProductController
 } from "@/controllers/shop.controller.js";
-import {LoginController} from '@/controllers/login.controller.js'
+import {LoginController, RegisterController} from '@/controllers/login.controller.js'
 
 setupDatabase();
 
@@ -94,7 +94,7 @@ const server = serve({
                         );
                     }
 
-                    const user = LoginController.checkUser(username, password);
+                    const user = await LoginController.checkUser(username, password);
 
                     return Response.json({token: user.token});
 
@@ -118,6 +118,25 @@ const server = serve({
                 }
             }
         },
+
+        "/api/enregistrer": {
+            POST: async (req) => {
+                try {
+                    const { username, firstname, password } = await req.json();
+
+                    if (!username || !firstname || !password) {
+                        return new Response(JSON.stringify({ error: "Champs manquants" }), { status: 400 });
+                    }
+
+                    const user = await RegisterController.register(username, firstname, password);
+
+                    return Response.json({ message: "Utilisateur créé", user_id: user.id }, { status: 201 });
+                } catch (err) {
+                    return new Response(JSON.stringify({ error: err.message }), { status: 400 });
+                }
+            }
+        },
+
         "/*": index,
     },
     development: {

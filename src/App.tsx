@@ -5,6 +5,7 @@ import LoginPage from './frontend/login'
 import ProductPage from './frontend/product'
 import CheckoutPage from './frontend/checkout'
 import OrderResumePage from "./frontend/order-resume";
+import RegisterPage from "./frontend/register";
 import {useEffect} from "react";
 import {jwtDecode} from "jwt-decode";
 
@@ -26,6 +27,7 @@ export function App() {
             <Route path="/product" element={<ProductPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/order/:id" element={<OrderResumePage />} />
+            <Route path="/register" element={<RegisterPage />} />
             <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
     );

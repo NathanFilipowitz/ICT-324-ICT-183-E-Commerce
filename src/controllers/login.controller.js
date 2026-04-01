@@ -4,23 +4,21 @@ import bcrypt from 'bcrypt';
 
 export const LoginController = {
     checkUser: async (username, password) => {
-        let user = await UserModel.getUser(username);
-
+        const user = await UserModel.getUser(username);
         if (!user) return false;
 
         const isMatch = await bcrypt.compare(password, user.password);
-
         if (!isMatch) return false;
 
-        user = {
+        const safeUser = {
             id: user.id,
-            name: user.name,
             username: user.username,
-        }
-        // create jwt
-        const token = generateAccessToken(user);
-        console.log(token)
-        return {user_id: user.id, token: token};
+            firstname: user.firstname
+        };
+
+        const token = jwt.sign(safeUser, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+
+        return { user_id: user.id, token };
     }
 };
 
@@ -28,3 +26,27 @@ function generateAccessToken(user) {
     console.log(process.env.ACCESS_TOKEN_SECRET)
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1h'});
 }
+
+
+
+export const RegisterController = {
+    register: async (username, firstname, password) => {
+        const existingUser = await UserModel.getUser(username);
+        if (existingUser) {
+            throw new Error("Utilisateur déjà existant");
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        console.log(hashedPassword);
+
+        const newUser = await UserModel.createUser({
+            username,
+            firstname,
+            password: hashedPassword
+        });
+
+        return newUser;
+    }
+};
+
+

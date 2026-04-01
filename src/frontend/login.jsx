@@ -73,6 +73,9 @@ export default function LoginPage() {
                         <Button appearance="primary" onClick={handleLogin}>
                             Login
                         </Button>
+                        <Button appearance="primary" onClick={() => navigate("/register")}>
+                            Créer un compte
+                        </Button>
                     </ButtonToolbar>
                 </Form.Group>
             </Form>

@@ -11,7 +11,7 @@ export function setupDatabase() {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name VARCHAR(45) NOT NULL,
         username VARCHAR(45) NOT NULL UNIQUE,
-        password VARCHAR(45) NOT NULL
+        password TEXT NOT NULL
       )
     `);
 
@@ -57,7 +57,7 @@ export function setupDatabase() {
 
     db.run(`
       INSERT INTO clients (id, name, username, password) VALUES
-        (1, 'Alice Smith', 'alice.s', 'pass123'),
+        (1, 'Alice Smith', 'alice.s', '$2b$10$KC6ovQP3sicmKsdLYlRBTO9m4VS6ASe7B3I3f1NDpYa/GFjQmCjdm'),
         (2, 'Bob Johnson', 'bjohnson', 'secure456'),
         (3, 'Charlie Brown', 'cbrown', 'charlie789'),
         (4, 'Diana Prince', 'dprince', 'wonder101'),
