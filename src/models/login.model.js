@@ -15,7 +15,7 @@ export const UserModel = {
             'INSERT INTO clients (name, username, password) VALUES (?, ?, ?)'
         );
         console.log("Préparation valide");
-        const info = stmt.run(username, firstname, password);
+        const info = stmt.run(firstname, username, password);
         return {
             id: info.lastInsertRowid,
             username,
