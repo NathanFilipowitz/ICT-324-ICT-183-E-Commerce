@@ -17,9 +17,21 @@ export function AppNavbar() {
     const [placement, setPlacement] = useState('right');
     const [cart, setCart] = useState([]);
     const [token, setToken] = useState(localStorage.getItem("JWT"))
-    const [client, setClient] = useState(jwtDecode(token))
+
+    const [client, setClient] = useState(() => {
+        if (token && token !== "null" && token !== "undefined") {
+            try {
+                return jwtDecode(token);
+            } catch (error) {
+                console.error("Token issue :", error);
+                return null;
+            }
+        }
+        return null;
+    });
 
     const fetchCart = async () => {
+        if (!client?.id) return;
         try {
             const response = await fetch(`/api/cart/${client.id}`);
             const data = await response.json();
@@ -49,6 +61,7 @@ export function AppNavbar() {
         <Navbar>
             <Navbar.Brand>SecureShop</Navbar.Brand>
             <Nav>
+                <Nav.Item onClick={() => navigate("/product")}>All Products</Nav.Item>
                 <Nav.Item onClick={() => handleLogin()}>{!token ? "Login":"Logout"}</Nav.Item>
                 <Nav.Item onClick={() => handleOpen()}>Cart</Nav.Item>
 
